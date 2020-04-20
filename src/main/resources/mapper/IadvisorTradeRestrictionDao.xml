@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hmk.javaweb.dao.IadvisorTradeRestrictionDao">
+
+    <resultMap type="com.hmk.javaweb.entity.IadvisorTradeRestriction" id="IadvisorTradeRestrictionMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="stockcode" column="stockCode" jdbcType="VARCHAR"/>
+        <result property="stockname" column="stockName" jdbcType="VARCHAR"/>
+        <result property="inputtime" column="inputTime" jdbcType="TIMESTAMP"/>
+        <result property="jsonstr" column="jsonStr" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="IadvisorTradeRestrictionMap">
+        select
+          id, stockCode, stockName, inputTime, jsonStr
+        from hmk_demo.iadvisor_trade_restriction
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="IadvisorTradeRestrictionMap">
+        select
+          id, stockCode, stockName, inputTime, jsonStr
+        from hmk_demo.iadvisor_trade_restriction
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="IadvisorTradeRestrictionMap">
+        select
+          id, stockCode, stockName, inputTime, jsonStr
+        from hmk_demo.iadvisor_trade_restriction
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="stockcode != null and stockcode != ''">
+                and stockCode = #{stockcode}
+            </if>
+            <if test="stockname != null and stockname != ''">
+                and stockName = #{stockname}
+            </if>
+            <if test="inputtime != null">
+                and inputTime = #{inputtime}
+            </if>
+            <if test="jsonstr != null and jsonstr != ''">
+                and jsonStr = #{jsonstr}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into hmk_demo.iadvisor_trade_restriction(stockCode, stockName, inputTime, jsonStr)
+        values (#{stockcode}, #{stockname}, #{inputtime}, #{jsonstr})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update hmk_demo.iadvisor_trade_restriction
+        <set>
+            <if test="stockcode != null and stockcode != ''">
+                stockCode = #{stockcode},
+            </if>
+            <if test="stockname != null and stockname != ''">
+                stockName = #{stockname},
+            </if>
+            <if test="inputtime != null">
+                inputTime = #{inputtime},
+            </if>
+            <if test="jsonstr != null and jsonstr != ''">
+                jsonStr = #{jsonstr},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from hmk_demo.iadvisor_trade_restriction where id = #{id}
+    </delete>
+
+</mapper>
